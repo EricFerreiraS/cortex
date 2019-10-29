@@ -4,7 +4,7 @@ import conversor_moedas as cm
 app = Flask(__name__)
 
 @app.route('/conversor')
-def hello():
+def conversor():
     data = request.args.get("data")
     origem=request.args.get("origem")
     destino=request.args.get("destino")
