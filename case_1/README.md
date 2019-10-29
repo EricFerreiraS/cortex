@@ -18,3 +18,5 @@ Arquivo servico_conversor.py<br>
     conversor - recebe os argumentos da requisição e retorna o valor convertido.<br>
 <br>    
 Para iniciar o programa, use o comando 'env FLASK_APP=servico_conversor.py flask run'
+<br>
+Para acessar o serviço, utileze a URL http://localhost:5000/conversor?data=29/10/2019&origem=BRL&destino=USD&valor=10
