@@ -1,5 +1,6 @@
 import csv
 import requests
+from datetime import datetime
 
 def import_moedas(path,deli=';'):
     '''
@@ -17,12 +18,15 @@ def import_moedas(path,deli=';'):
 
 def conversor_moedas(data,origem,destino,valor,url='https://www3.bcb.gov.br/bc_moeda/rest/converter/'):
     '''
-    data: data da cotação (formato YYYY-MM-DD)
+    data: data da cotação
     origem: código da moeda de origem
     destino: código da moeda de destino
     valor: valor a ser convertido
     url: API rest que realiza a conversão
     '''
+    #convertendo a data para o formato da API
+    data = datetime.strptime(data, '%d/%m/%Y').strftime('%Y-%m-%d')
+    
     #monta a url
     url_ = url+str(valor)+'/1/'+str(origem)+'/'+str(destino)+'/'+str(data)
 
@@ -38,16 +42,3 @@ def conversor_moedas(data,origem,destino,valor,url='https://www3.bcb.gov.br/bc_m
     else:
         print('Ocorreu um erro ao acessar a API do Banco Central')
         raise Exception (response.status_code)
-
-if __name__ == "__main__":
-    #usa o arquivo presente no banco central para criar o dicionário (https://www.bcb.gov.br/acessoinformacao/legado?url=https:%2F%2Fwww4.bcb.gov.br%2Fpec%2Ftaxas%2Fbatch%2Ftabmoedas.asp%3Fid%3Dtabmoeda)
-    dict_moedas = import_moedas('./M20191029.csv')
-
-    try:
-        #converter 10 BRL para EUR
-        print('Valor de R$10 para EUR é: '+ conversor_moedas('2019-10-29',dict_moedas['BRL'],dict_moedas['EUR'],10))
-        #converter 10 EUR para USD
-        print('Valor de €10 para USD é: '+ conversor_moedas('2019-10-29',dict_moedas['EUR'],dict_moedas['USD'],10))
-    except Exception as e:
-        print(str(e))
-
